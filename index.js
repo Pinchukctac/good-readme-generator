@@ -1,7 +1,7 @@
 const prompt = require('inquirer').createPromptModule()
 const fs = require('fs')
 
-const api = require('./utils/github-api.js')
+const api = require('./utils/api.js')
 const generateMarkdown = require('./utils/generateMarkdown.js')
 
 const writeToFile = (fileName, data) => {
@@ -11,23 +11,19 @@ const writeToFile = (fileName, data) => {
 const init = async _ => {
   let rmObject = {}
   do {
-    const { rmUser, rmRepo } = await prompt([
+    const { rmUser} = await prompt([
       {
         type: 'input',
-        name: 'username',
+        name: 'rmUser',
         message: 'What is your GitHub user name?'
       },
-      {
-        type: 'input',
-        name: 'rmRepo',
-        message: 'What is your repository name?'
-      }
     ])
-    rmObject = await api.getUser(rmUser, rmRepo)
+    rmObject = await api.getUser(rmUser)
+    console.log(rmObject)
     if (!rmObject) {
       console.error('Repo not found!')
     } else {
-      console.log(`${rmObject.fullName} found!`)
+      console.log(`${rmObject.data.login} found!`)
     }
   } while (!rmObject)
   // const ghApi = await api.getUser(rmUser)
@@ -88,7 +84,10 @@ const init = async _ => {
   },
 
   ]))
+  console.log(rmObject)
   writeToFile(rmObject.title, await generateMarkdown(rmObject))
+
 }
+
 
 init()
