@@ -18,13 +18,6 @@ const init = async _ => {
         message: 'What is your GitHub user name?'
       },
     ])
-    rmObject = await api.getUser(rmUser)
-    console.log(rmObject)
-    if (!rmObject) {
-      console.error('Repo not found!')
-    } else {
-      console.log(`${rmObject.data.login} found!`)
-    }
   } while (!rmObject)
   // const ghApi = await api.getUser(rmUser)
   Object.assign(rmObject, await prompt([
@@ -75,6 +68,12 @@ const init = async _ => {
         "Boost Software License 1.0",
         "The Unlicense",
       ]
+    },
+
+  {
+      type: "input",
+      message: "What command should be run to run tests?",
+      name: "command",
     },
     
   {
